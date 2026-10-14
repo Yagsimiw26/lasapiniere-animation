@@ -1,0 +1,167 @@
+<!-- La Sapinière · automatisch de websitetaal; optioneel data-language="nl", "fr", "de" of "en". -->
+<div id="animatie-app" aria-label="Animatieprogramma"></div>
+<style>
+  #animatie-app {
+    --ap-green: #41663a; --ap-ink: #333333; --ap-muted: #596459;
+    --ap-line: #dfe6d9; --ap-soft: #f0f4ea; --ap-paper: #fffdf8;
+    color: var(--ap-ink); font-family: inherit; line-height: 1.5;
+    width: 100%; max-width: none; margin: 28px 0; text-align: left;
+    font-size: 16px; isolation: isolate;
+  }
+  #animatie-app *, #animatie-app *::before, #animatie-app *::after { box-sizing: border-box; }
+  #animatie-app button { font: inherit; cursor: pointer; text-transform: none; letter-spacing: normal; }
+  #animatie-app button:focus-visible, #animatie-app summary:focus-visible,
+  #animatie-app a:focus-visible { outline: 3px solid #bd7c31; outline-offset: 4px; }
+  #animatie-app .ap-shell { padding: 0; border: 0; border-radius: 0; background: transparent; }
+  #animatie-app .ap-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap:wrap; margin-bottom: 12px; }
+  #animatie-app .ap-tools { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+  #animatie-app .ap-language { font:inherit; font-size:14px; min-height:44px; max-width:100%; border:1px solid var(--ap-line); border-radius:8px; background:#fffdf9; color:var(--ap-ink); padding:8px 10px; }
+  #animatie-app .ap-note { font-size:14px; color:var(--ap-muted); margin:0 0 16px; }
+  #animatie-app .ap-label { font: inherit; font-size: 15px; font-weight: 600; margin: 0; color: var(--ap-ink); }
+  #animatie-app .ap-today, #animatie-app .ap-retry { border: 1px solid var(--ap-line); border-radius: 99px; background: white; color: var(--ap-green); padding: 10px 16px; min-height: 44px; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  #animatie-app .ap-today:hover, #animatie-app .ap-retry:hover { background: var(--ap-soft); }
+  #animatie-app .ap-days { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 8px; padding: 3px 0 10px; }
+  #animatie-app .ap-date { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 11px 4px; min-height: 86px; border: 1px solid #e6e1d8; border-radius: 8px; background: #fffdf9; color: var(--ap-ink); box-shadow: none; }
+  #animatie-app .ap-date:hover { border-color: var(--ap-green); }
+  #animatie-app .ap-date[aria-pressed="true"] { background: var(--ap-green); color: white; border-color: var(--ap-green); }
+  #animatie-app .ap-date-label { font-size: 13px; font-weight: 650; }
+  #animatie-app .ap-date-number { font-size: 23px; line-height: 1.3; font-weight: 750; font-variant-numeric: tabular-nums; }
+  #animatie-app .ap-date-month { font-size: 12px; }
+  #animatie-app .ap-swipe { display: none; margin: 2px 0 12px; font-size: 13px; color: var(--ap-muted); }
+  #animatie-app .ap-day-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 16px 0 18px; padding-top: 22px; border-top: 1px solid var(--ap-line); }
+  #animatie-app .ap-day-heading h3 { font: inherit; font-size: 21px; font-weight: 750; line-height: 1.3; margin: 0; color: var(--ap-ink); }
+  #animatie-app .ap-count { font-size: 14px; color: var(--ap-muted); }
+  #animatie-app .ap-list { list-style: none; padding: 0; margin: 0; }
+  #animatie-app .ap-item { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 18px; position: relative; padding-bottom: 14px; }
+  #animatie-app .ap-item:not(:last-child)::before { content: ""; position: absolute; top: 27px; bottom: -8px; left: 81px; width: 1px; background: var(--ap-line); }
+  #animatie-app .ap-time { padding: 17px 16px 0 0; position: relative; text-align: right; font-variant-numeric: tabular-nums; }
+  #animatie-app .ap-time::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ap-green); position: absolute; right: -1px; top: 24px; }
+  #animatie-app .ap-time strong { display: block; font-size: 17px; line-height: 1.3; }
+  #animatie-app .ap-time small { display: block; font-size: 14px; color: var(--ap-muted); margin-top: 2px; }
+  #animatie-app .ap-card { display: grid; grid-template-columns: minmax(0,1fr) 96px; align-items: start; gap: 18px; background: white; border: 1px solid var(--ap-line); padding: 18px; border-radius: 8px; min-width: 0; }
+  #animatie-app .ap-content { min-width: 0; overflow-wrap: anywhere; }
+  #animatie-app .ap-title-row { display: flex; align-items: center; flex-wrap: wrap; gap: 7px 12px; margin-bottom: 8px; }
+  #animatie-app .ap-title { font: inherit; font-size: 19px; line-height: 1.35; font-weight: 750; margin: 0; color: var(--ap-ink); }
+  #animatie-app .ap-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; color: var(--ap-muted); font-size: 14px; }
+  #animatie-app .ap-age { color: var(--ap-green); background: var(--ap-soft); padding: 3px 9px; border-radius: 99px; font-size: 13px; font-weight: 700; }
+  #animatie-app .ap-desc, #animatie-app details p { font-size: 15px; color: #495449; line-height: 1.65; margin: 10px 0 0; white-space: pre-line; }
+  #animatie-app details { margin-top: 9px; }
+  #animatie-app summary { font-size: 14px; font-weight: 650; color: var(--ap-green); cursor: pointer; min-height: 44px; padding-top: 8px; }
+  #animatie-app .ap-image { display: block; width: 96px; height: 82px; object-fit: cover; border-radius: 6px; background: var(--ap-soft); }
+  #animatie-app .ap-card.ap-no-image { grid-template-columns: minmax(0, 1fr); }
+  #animatie-app .ap-status { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ap-muted); line-height: 1.4; white-space: nowrap; }
+  #animatie-app .ap-status:empty { display: none; }
+  #animatie-app .ap-status.ap-live { color: #31512c; background: #edf4e8; border: 1px solid #d5e2ce; border-radius: 99px; padding: 5px 11px; font-weight: 700; }
+  #animatie-app .ap-live-dot { width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: #41663a; position: relative; }
+  #animatie-app .ap-live-dot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #41663a; }
+  @keyframes ap-live-pulse { from { transform: scale(1); opacity: .45; } to { transform: scale(2.4); opacity: 0; } }
+  #animatie-app .ap-empty { padding: 26px 18px; border-radius: 16px; background: var(--ap-soft); }
+  #animatie-app .ap-empty h4 { font: inherit; font-size: 18px; font-weight: 750; margin: 0 0 6px; color: var(--ap-ink); }
+  #animatie-app .ap-empty p { margin: 0; color: var(--ap-muted); font-size: 14px; }
+  #animatie-app .ap-footer { font-size: 13px; color: var(--ap-muted); padding-top: 14px; margin: 4px 0 0; border-top: 1px solid var(--ap-line); }
+  #animatie-app a { color: var(--ap-green); text-decoration: underline; }
+  #animatie-app .ap-loading { padding: 24px; background: var(--ap-soft); border-radius: 16px; }
+  @media (max-width: 900px) {
+    #animatie-app .ap-days { display:flex; overflow-x:auto; scrollbar-width:thin; scroll-snap-type:x proximity; }
+    #animatie-app .ap-date { flex:0 0 84px; scroll-snap-align:start; }
+    #animatie-app .ap-swipe { display:block; }
+  }
+  @media (max-width: 700px) {
+    #animatie-app .ap-shell { padding: 0; border-radius: 0; }
+    #animatie-app .ap-days { display: flex; overflow-x: auto; scrollbar-width: thin; scroll-snap-type: x proximity; }
+    #animatie-app .ap-date { flex: 0 0 84px; scroll-snap-align: start; }
+    #animatie-app .ap-swipe { display: block; }
+    #animatie-app .ap-day-heading { margin-top: 8px; }
+    #animatie-app .ap-top { align-items: center; }
+    #animatie-app .ap-today { padding: 10px 12px; font-size: 14px; }
+    #animatie-app .ap-item { grid-template-columns: minmax(0,1fr); gap: 7px; padding-bottom: 18px; }
+    #animatie-app .ap-item:not(:last-child)::before, #animatie-app .ap-time::after { display: none; }
+    #animatie-app .ap-time { padding: 0 3px; text-align: left; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    #animatie-app .ap-time strong { font-size: 16px; }
+    #animatie-app .ap-time small { margin: 0; }
+    #animatie-app .ap-time small::before { content: "– "; }
+    #animatie-app .ap-card { padding: 14px; gap: 12px; grid-template-columns: minmax(0,1fr) 64px; }
+    #animatie-app .ap-content { display: contents; }
+    #animatie-app .ap-title-row { grid-column: 1; margin-bottom: 0; }
+    #animatie-app .ap-title { font-size: 17px; overflow-wrap: anywhere; }
+    #animatie-app .ap-meta { grid-column: 1; overflow-wrap: anywhere; }
+    #animatie-app .ap-desc, #animatie-app .ap-card details { grid-column: 1 / -1; margin-top: 0; overflow-wrap: anywhere; }
+    #animatie-app .ap-image { width: 64px; height: 64px; border-radius: 9px; }
+    #animatie-app .ap-card > .ap-image { grid-column: 2; grid-row: 1 / 3; }
+    #animatie-app .ap-meta { font-size: 14px; }
+    #animatie-app .ap-day-heading h3 { font-size: 19px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    #animatie-app button { transition: background-color .15s, border-color .15s; }
+    #animatie-app .ap-live-dot::after { animation: ap-live-pulse 1.6s ease-out 3; }
+  }
+</style>
+<script>
+(() => {
+  'use strict';
+  const root = document.getElementById('animatie-app');
+  if (!root || root.dataset.initialized) return;
+  root.dataset.initialized = 'true';
+  const BASE = root.dataset.feed || 'https://yagsimiw26.github.io/lasapiniere-animation/data/';
+  const ZONE = 'Europe/Luxembourg';
+  const LOCALES = {nl:'nl-NL',fr:'fr-FR',en:'en-GB',de:'de-DE'};
+  const COPY = {
+    nl:{choose:'Kies een dag',today:'Vandaag',yesterday:'Gisteren',tomorrow:'Morgen',back:'Naar vandaag',swipe:'Veeg voor de komende dagen →',all:'Alle leeftijden',past:'Afgelopen',live:'Nu bezig',soon:'Straks',more:'Meer informatie',day:'Deze dag',one:'activiteit',many:'activiteiten',none:'Geen programma',empty:'Geen activiteiten gepland',emptyText:'Voor deze dag is nog geen programma beschikbaar. Kies een andere dag of vraag het aan de receptie.',loading:'Het programma wordt opgehaald…',error:'Het programma kon niet laden',retry:'Opnieuw proberen',errorText:'Probeer het opnieuw of neem contact op met de receptie.',footer:'Het programma kan wijzigen.',lang:'Taal van het programma',notready:'De vertaling wordt voorbereid. Kies hierboven Nederlands of Français om de planning te bekijken.',stale:'Dit is de laatst beschikbare planning. Vraag de receptie naar eventuele wijzigingen.',offline:'De nieuwste planning kon niet worden opgehaald. Je ziet de laatst opgeslagen versie.'},
+    fr:{choose:'Choisissez un jour',today:"Aujourd’hui",yesterday:'Hier',tomorrow:'Demain',back:"Aujourd’hui",swipe:'Faites défiler pour les prochains jours →',all:'Tous les âges',past:'Terminé',live:'En cours',soon:'À venir',more:"Plus d’informations",day:'Ce jour',one:'activité',many:'activités',none:'Pas de programme',empty:'Aucune activité prévue',emptyText:'Le programme de cette journée n’est pas encore disponible. Choisissez un autre jour ou renseignez-vous à la réception.',loading:'Chargement du programme…',error:'Le programme n’a pas pu être chargé',retry:'Réessayer',errorText:'Réessayez ou contactez la réception.',footer:'Le programme peut être modifié.',lang:'Langue du programme',notready:'La traduction est en préparation. Choisissez Nederlands ou Français ci-dessus pour consulter le programme.',stale:'Voici le dernier programme disponible. Renseignez-vous à la réception pour connaître les éventuels changements.',offline:'Le programme le plus récent n’a pas pu être chargé. La dernière version enregistrée est affichée.'},
+    en:{choose:'Choose a day',today:'Today',yesterday:'Yesterday',tomorrow:'Tomorrow',back:'Back to today',swipe:'Swipe for the coming days →',all:'All ages',past:'Finished',live:'Happening now',soon:'Coming up',more:'More information',day:'This day',one:'activity',many:'activities',none:'No programme',empty:'No activities scheduled',emptyText:'The programme for this day is not available yet. Choose another day or ask at reception.',loading:'Loading the programme…',error:'The programme could not be loaded',retry:'Try again',errorText:'Please try again or contact reception.',footer:'The programme is subject to change.',lang:'Programme language',notready:'The translation is being prepared. Select Nederlands or Français above to view the programme.',stale:'This is the latest available programme. Please ask reception about any changes.',offline:'The latest programme could not be loaded. The last saved version is shown.'},
+    de:{choose:'Tag auswählen',today:'Heute',yesterday:'Gestern',tomorrow:'Morgen',back:'Zurück zu heute',swipe:'Für die nächsten Tage wischen →',all:'Alle Altersgruppen',past:'Beendet',live:'Findet gerade statt',soon:'Demnächst',more:'Mehr Informationen',day:'An diesem Tag',one:'Aktivität',many:'Aktivitäten',none:'Kein Programm',empty:'Keine Aktivitäten geplant',emptyText:'Für diesen Tag ist noch kein Programm verfügbar. Wähle einen anderen Tag oder frage an der Rezeption nach.',loading:'Das Programm wird geladen…',error:'Das Programm konnte nicht geladen werden',retry:'Erneut versuchen',errorText:'Bitte versuche es erneut oder kontaktiere die Rezeption.',footer:'Änderungen des Programms sind möglich.',lang:'Sprache des Programms',notready:'Die Übersetzung wird vorbereitet. Wähle oben Nederlands oder Français, um das Programm anzusehen.',stale:'Dies ist das zuletzt verfügbare Programm. Frage an der Rezeption nach möglichen Änderungen.',offline:'Das aktuelle Programm konnte nicht geladen werden. Die zuletzt gespeicherte Version wird angezeigt.'}
+  };
+  const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const requested = (root.dataset.language || document.documentElement.lang || 'nl').toLowerCase().split('-')[0];
+  let language = COPY[requested] ? requested : 'nl';
+  const T = () => COPY[language];
+  const dayFormatter = new Intl.DateTimeFormat('en-GB',{timeZone:ZONE,year:'numeric',month:'2-digit',day:'2-digit'});
+  function todayKey(){const p=Object.fromEntries(dayFormatter.formatToParts(new Date()).map(x=>[x.type,x.value]));return `${p.year}-${p.month}-${p.day}`;}
+  function addDays(key,n){const d=new Date(key+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
+  function format(key,options){return new Intl.DateTimeFormat(LOCALES[language],{...options,timeZone:ZONE}).format(new Date(key+'T12:00:00Z'));}
+  let today=todayKey(),selected=today,days=new Map(),payload=null,loaded=false,offline=false,sequence=0,controller;
+  root.innerHTML=`<section class="ap-shell"><div class="ap-top"><p class="ap-label"></p><div class="ap-tools"><select class="ap-language"><option value="nl">Nederlands</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="en">English</option></select><button type="button" class="ap-today"></button></div></div><nav class="ap-days"></nav><p class="ap-swipe"></p><div class="ap-results" aria-live="polite" aria-atomic="true" aria-busy="true"></div><p class="ap-footer"></p></section>`;
+  const nav=root.querySelector('.ap-days'),results=root.querySelector('.ap-results'),picker=root.querySelector('.ap-language');
+  function renderLabels(){root.lang=language;picker.value=language;picker.setAttribute('aria-label',T().lang);root.querySelector('.ap-label').textContent=T().choose;root.querySelector('.ap-today').textContent=T().back;root.querySelector('.ap-swipe').textContent=T().swipe;root.querySelector('.ap-footer').textContent=T().footer;nav.setAttribute('aria-label',T().choose);}
+  function renderDates(){nav.innerHTML=Array.from({length:9},(_,i)=>{const key=addDays(today,i-1),label=i===0?T().yesterday:i===1?T().today:i===2?T().tomorrow:format(key,{weekday:'short'});return `<button type="button" class="ap-date" data-date="${key}" aria-pressed="${key===selected}" aria-label="${esc(format(key,{weekday:'long',day:'numeric',month:'long',year:'numeric'}))}"><span class="ap-date-label">${esc(label)}</span><span class="ap-date-number">${format(key,{day:'numeric'})}</span><span class="ap-date-month">${esc(format(key,{month:'short'}))}</span></button>`;}).join('');}
+  function state(a){if(selected!==today||!a.start)return '';const now=new Intl.DateTimeFormat('en-GB',{timeZone:ZONE,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date());if(a.end&&a.end>=a.start&&now>=a.end)return 'past';if(a.end&&a.end>a.start&&now>=a.start&&now<a.end)return 'live';return now<a.start?'soon':'';}
+  function statusMarkup(value){return (value==='live'?'<span class="ap-live-dot" aria-hidden="true"></span>':'')+esc(T()[value]||'');}
+  function renderDay(){
+    for(const b of nav.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.date===selected));
+    if(!loaded)return;
+    const items=days.get(selected)||[],heading=`${selected===today?T().today+' · ':selected===addDays(today,-1)?T().yesterday+' · ':''}${format(selected,{weekday:'long',day:'numeric',month:'long'})}`;
+    const age=Date.now()-Date.parse(payload.updatedAt),note=offline?T().offline:age>3*3600000?T().stale:'';
+    results.innerHTML=`<header class="ap-day-heading"><h3>${esc(heading)}</h3><span class="ap-count">${items.length?`${items.length} ${items.length===1?T().one:T().many}`:T().none}</span></header>${note?`<p class="ap-note" role="status">${esc(note)}</p>`:''}`+(items.length?`<ol class="ap-list">${items.map((a,i)=>{const value=state(a);return `<li class="ap-item"><div class="ap-time"><strong>${esc(a.start||T().day)}</strong>${a.end?`<small>${esc(a.end)}</small>`:''}</div><article class="ap-card ${a.image?'':'ap-no-image'}"><div class="ap-content"><div class="ap-title-row"><h4 class="ap-title">${esc(a.title)}</h4><span class="ap-status ${value==='live'?'ap-live':''}" data-status="${i}" data-value="${value}">${statusMarkup(value)}</span></div><div class="ap-meta">${a.location?`<span>${esc(a.location)}</span>`:''}${a.ages.map(x=>`<span class="ap-age">${esc(/^all$/i.test(x)?T().all:x)}</span>`).join('')}</div>${a.desc?a.desc.length>180?`<details><summary>${esc(T().more)}</summary><p>${esc(a.desc)}</p></details>`:`<p class="ap-desc">${esc(a.desc)}</p>`:''}</div>${a.image?`<img class="ap-image" src="${esc(a.image)}" alt="" loading="lazy" decoding="async">`:''}</article></li>`;}).join('')}</ol>`:`<div class="ap-empty"><h4>${esc(T().empty)}</h4><p>${esc(payload.translationReady===false?T().notready:T().emptyText)}</p></div>`);
+    results.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.closest('.ap-card').classList.add('ap-no-image');img.remove();},{once:true}));
+  }
+  function valid(data,lang){if(!data||data.version!==1||data.language!==lang||!data.days||typeof data.days!=='object'||!Number.isFinite(Date.parse(data.updatedAt)))return false;for(const [day,items]of Object.entries(data.days)){if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||!Array.isArray(items)||items.length>100)return false;for(const a of items){if(!a||!['title','desc','location','start','end','image'].every(k=>typeof a[k]==='string')||!Array.isArray(a.ages)||!a.ages.every(x=>typeof x==='string')||a.image&&!a.image.startsWith('https://'))return false;}}return true;}
+  function accept(data){payload=data;days=new Map(Object.entries(data.days).filter(([day])=>day>=addDays(today,-1)&&day<=addDays(today,7)));loaded=true;renderDay();}
+  async function load(){
+    const id=++sequence,lang=language,key='lsp.animation.v1.'+BASE+'.'+lang;
+    controller?.abort();controller=new AbortController();const activeController=controller;
+    loaded=false;payload=null;offline=false;days=new Map();results.setAttribute('aria-busy','true');
+    results.innerHTML=`<p class="ap-loading" role="status">${esc(T().loading)}</p>`;
+    try{const raw=localStorage.getItem(key);if(raw&&raw.length<200000){const stored=JSON.parse(raw);if(valid(stored,lang)&&Date.now()-Date.parse(stored.updatedAt)<48*3600000)accept(stored);}}catch{}
+    const timer=setTimeout(()=>activeController.abort(),8000);
+    try{
+      const response=await fetch(new URL(lang+'.json',BASE),{signal:activeController.signal,cache:'no-cache'});
+      if(!response.ok)throw new Error('Programme unavailable');
+      const raw=await response.text();if(raw.length>200000)throw new Error('Response too large');const data=JSON.parse(raw);
+      if(id!==sequence)return;if(!valid(data,lang))throw new Error('Invalid programme');
+      // Skip redraw when identical to the cached version: keep opened descriptions intact.
+      const unchanged=payload&&JSON.stringify(data)===JSON.stringify(payload);
+      if(!unchanged)accept(data);
+      try{localStorage.setItem(key,raw);}catch{}
+    }catch{
+      if(id!==sequence)return;
+      if(loaded){offline=true;renderDay();}
+      else{results.innerHTML=`<div class="ap-empty" role="alert"><h4>${esc(T().error)}</h4><p>${esc(T().errorText)}</p><button type="button" class="ap-retry">${esc(T().retry)}</button></div>`;results.querySelector('.ap-retry').addEventListener('click',load);}
+    }finally{clearTimeout(timer);if(id===sequence)results.setAttribute('aria-busy','false');}
+  }
+  nav.addEventListener('click',event=>{const b=event.target.closest('button[data-date]');if(!b||!nav.contains(b))return;selected=b.dataset.date;renderDay();});
+  root.querySelector('.ap-today').addEventListener('click',()=>{selected=today;renderDay();nav.scrollLeft=0;});
+  picker.addEventListener('change',()=>{language=picker.value;renderLabels();renderDates();load();});
+  renderLabels();renderDates();load();
+  const refresh=setInterval(()=>{if(!root.isConnected){clearInterval(refresh);controller?.abort();return;}const next=todayKey();if(next!==today){if(selected===today||selected<addDays(next,-1))selected=next;today=next;renderDates();load();return;}if(!loaded)return;const items=days.get(selected)||[];results.querySelectorAll('[data-status]').forEach(el=>{const value=state(items[Number(el.dataset.status)]);if(el.dataset.value!==value){el.innerHTML=statusMarkup(value);el.dataset.value=value;el.classList.toggle('ap-live',value==='live');}});},60000);
+})();
+</script>
