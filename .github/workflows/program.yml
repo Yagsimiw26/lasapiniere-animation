@@ -1,0 +1,62 @@
+name: Update cached animation programme
+on:
+  schedule:
+    - cron: '17 * * * *'
+      timezone: Europe/Luxembourg
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'docs/**'
+      - 'glossary.json'
+      - 'overrides.json'
+      - '.github/workflows/program.yml'
+permissions:
+  contents: read
+concurrency:
+  group: animation-programme
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run offline tests
+        run: python -m unittest discover -s tests -v
+      - name: Refresh programme and translate changed text only
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-5.4-mini
+        run: python scripts/update_program.py
+      - name: Save translation memory and static programme
+        if: ${{ !cancelled() }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cache docs/data
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh cached public animation programme'
+            git push
+          fi
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
