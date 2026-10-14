@@ -231,6 +231,18 @@ def main():
                     write_json(base / 'cache/translations.json', memory)
                     break
                 except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as error:
+                    if isinstance(error, HTTPError):
+                        try:
+                            detail = json.loads(error.read()).get('error', {})
+                            code = re.sub(r'[^a-zA-Z0-9_.-]', '', str(detail.get('code', '')))[:80]
+                            parameter = re.sub(r'[^a-zA-Z0-9_.-]', '', str(detail.get('param', '')))[:80]
+                        except Exception:
+                            code, parameter = '', ''
+                        print(f'Translation attempt {attempt + 1}: HTTP {error.code}; code={code}; parameter={parameter}')
+                    elif isinstance(error, (ValueError, KeyError)):
+                        print(f'Translation attempt {attempt + 1}: validation {type(error).__name__}: {str(error)[:180]}')
+                    else:
+                        print(f'Translation attempt {attempt + 1}: network {type(error).__name__}')
                     if attempt == 2:
                         # Provider bodies and request headers never appear in logs.
                         raise RuntimeError('Translation failed after 3 attempts; previous public feed is retained') from None
