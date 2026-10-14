@@ -1,1 +1,176 @@
-{}
+{
+  "dad82799d5c150c7a3517ee6bb283179d2912f4b861f4dcfef17faf5b240c729": {
+    "en": {
+      "title": "Ten-pass ball",
+      "desc": "It’s quite an art to pass the ball around ten times with your team. Especially since the other team will of course do everything they can to stop it!",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    },
+    "de": {
+      "title": "Zehnerball",
+      "desc": "Es ist schon eine Kunst, den Ball mit deinem Team zehnmal zuzuspielen. Vor allem, weil das andere Team natürlich alles daran setzt, das zu verhindern!",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    }
+  },
+  "81096e8f4bdeab548c28daed48d0907ca1c351dde6aa2a79671ddb593d757a0a": {
+    "en": {
+      "title": "KIDS' CLUB: Fluttering Ghost",
+      "desc": "Nice and spooky! Today we are making a little ghost.",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    },
+    "de": {
+      "title": "KINDERCLUB: Flattergeist",
+      "desc": "Schön gruselig! Heute basteln wir ein Gespenst.",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    }
+  },
+  "3c7ad5163b269dd365282648365babe39f568d1741fe8bb61435e1f3acfe1cd2": {
+    "de": {
+      "title": "KINDERCLUB: Regenbogenanhänger",
+      "desc": "Wir machen einen wunderschönen, farbenfrohen Regenbogen, den du aufhängen kannst!",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    }
+  },
+  "3647cd8332af806093221ef77c49337f47706edb255cb9e7cf5e33a3c9e09f01": {
+    "en": {
+      "title": "Autumn Scavenger Walk",
+      "desc": "Can you fill your own autumn treasure box completely? Then walk along with us! Bring an empty egg carton that fits 10 eggs if you have one.",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "Familie"
+      ]
+    },
+    "de": {
+      "title": "Herbst-Schatzsuche",
+      "desc": "Kannst du deine eigene Herbstschatzkiste ganz voll bekommen? Dann komm mit uns mit! Bring, wenn du eine hast, einen leeren Eierkarton mit, in den 10 Eier passen.",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "Familie"
+      ]
+    }
+  },
+  "280d96d3722d5bfc55b3524389dd4b1d1b8c9b43c1490967acf5b49aa1ab733d": {
+    "en": {
+      "title": "Hunting Season",
+      "desc": "Can you stay out of the hunters' reach? Join in, from 10 years old and bring a mobile phone.",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "8+"
+      ]
+    }
+  },
+  "db2bdb93079489258713f25d78b9c9c39de58e6c5fa601dce0c577f3fce8ccb3": {
+    "de": {
+      "title": "Angst vor der BOMBE?!",
+      "desc": "Du hast doch keine Angst vor der Bombe?! Wir spielen lustige Spiele, bei denen du immer auf die Bombe achten musst!",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    }
+  },
+  "95c6abd74039ec9b8e5f97b5634de8bbb0ff92aebf759d0611d773c8a97f8836": {
+    "en": {
+      "title": "KIDS' CLUB: Sokkie the Spider",
+      "desc": "Do you already know Socky the spider? This is a very cheerful spider that wears little socks!",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    },
+    "de": {
+      "title": "KINDERCLUB: Sokkie die Spinne",
+      "desc": "Kennst du Socky die Spinne schon? Das ist eine sehr fröhliche Spinne, die Söckchen trägt!",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    }
+  },
+  "492c0c19698a6dc22a79da90e7bf7c8fa2558ae66c06242d530094e1967d55f3": {
+    "en": {
+      "title": "Dodgeball!",
+      "desc": "We will play all kinds of versions of dodgeball. Make sure you don't get hit! From 8 years old.",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    },
+    "de": {
+      "title": "Abwurfspiele!",
+      "desc": "Wir spielen verschiedene Arten von Völkerball. Pass auf, dass du nicht getroffen wirst! Ab 8 Jahren.",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    }
+  },
+  "e911cc910522930a9e0293ade0a01db225c6df121d63ef5de24970afdf379dbc": {
+    "en": {
+      "title": "Live-action Stratego",
+      "desc": "Who will survive this battlefield and collect the most points? From 8 years.",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "8+"
+      ]
+    },
+    "de": {
+      "title": "Stratego im Freien",
+      "desc": "Wer überlebt dieses Schlachtfeld und sammelt die meisten Punkte? Ab 8 Jahren.",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "8+"
+      ]
+    }
+  },
+  "9a8cf98886527dacbd5b0d34d3fbe8e73ab84fd098bee7d5919601092c968364": {
+    "en": {
+      "title": "King Ball",
+      "desc": "Ball game for 4 or more participants where you can play each other off. The aim of the game is to become the King.",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    },
+    "de": {
+      "title": "Königsball",
+      "desc": "Ballspiel für 4 oder mehr Teilnehmer, bei dem ihr euch gegenseitig ausspielen könnt. Das Ziel des Spiels ist es, King zu werden.",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    }
+  },
+  "a0c45fc950887786e1ca1470fd4c410e403e0861becc0447f6aecc3561d60cc1": {
+    "en": {
+      "title": "Cone Ball",
+      "desc": "Aiming well is important in coneball! Can you hit the ball off the cone?",
+      "location": "Animation cabin (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    },
+    "de": {
+      "title": "Hütchenball",
+      "desc": "Gut zielen ist bei Pionbal wichtig! Schaffst du es, den Ball vom Kegel zu schießen?",
+      "location": "Animationshütte (Animatie blokhut)",
+      "ages": [
+        "ALL"
+      ]
+    }
+  }
+}
