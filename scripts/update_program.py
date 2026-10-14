@@ -126,8 +126,7 @@ def validate_translation(source, target):
 
 def translate_batch(entries, glossary, key):
     text_schema = {'type': 'object', 'properties': {field: {'type': 'string'} for field in ('title', 'desc', 'location')},
-                   'required': ['title', 'desc', 'location', 'ages'], 'additionalProperties': False}
-    text_schema['properties']['ages'] = {'type': 'array', 'items': {'type': 'string'}}
+                   'required': ['title', 'desc', 'location'], 'additionalProperties': False}
     item_schema = {'type': 'object', 'properties': {'id': {'type': 'string'}, 'en': text_schema, 'de': text_schema},
                    'required': ['id', 'en', 'de'], 'additionalProperties': False}
     schema = {'type': 'object', 'properties': {'translations': {'type': 'array', 'items': item_schema}},
@@ -141,8 +140,9 @@ def translate_batch(entries, glossary, key):
         'Empty fields must stay empty. Keep location signage recognizable by following the glossary. '
         'Return the supplied id exactly once for each activity. Glossary: ' + compact(glossary)
     )
+    input_entries = [{'id': entry['id'], 'source': {k: v for k, v in entry['source'].items() if k != 'ages'}} for entry in entries]
     payload = {'model': os.environ.get('OPENAI_MODEL', 'gpt-5.4-mini'), 'store': False,
-               'reasoning': {'effort': 'low'}, 'instructions': instructions, 'input': compact(entries),
+               'reasoning': {'effort': 'low'}, 'instructions': instructions, 'input': compact(input_entries),
                'max_output_tokens': 18000,
                'text': {'format': {'type': 'json_schema', 'name': 'activity_translations', 'strict': True, 'schema': schema}}}
     raw = fetch_bytes('https://api.openai.com/v1/responses', compact(payload).encode(),
@@ -158,7 +158,9 @@ def translate_batch(entries, glossary, key):
         identity = entry['id']
         if identity not in expected or identity in translations:
             raise ValueError('Unexpected or duplicate activity')
-        translations[identity] = {language: validate_translation(expected[identity], entry[language]) for language in ('en', 'de')}
+        # Age metadata is factual, copied from XML; never sent to AI for translation.
+        translations[identity] = {language: validate_translation(expected[identity],
+            {**entry[language], 'ages': expected[identity]['ages']}) for language in ('en', 'de')}
     if set(translations) != set(expected):
         raise ValueError('Missing activity translation')
     return translations
@@ -189,7 +191,10 @@ def build_languages(nl, fr, memory, glossary, overrides):
                 # Never substitute a stale translation with changed source text.
                 if not entry:
                     continue
-                translated.append({**item, **entry})
+                translated_item = {**item, **entry, 'ages': item['ages']}
+                # Enforce the fixed club prefix even when a model keeps the Dutch term.
+                translated_item['title'] = re.sub(r'^KIDSCLUB\b', glossary.get('KIDSCLUB', {}).get(language, 'KIDSCLUB'), translated_item['title'], flags=re.IGNORECASE)
+                translated.append(translated_item)
             if len(translated) == len(items):
                 result[language][day] = translated
     return result
