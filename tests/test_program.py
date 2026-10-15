@@ -65,6 +65,47 @@ class ProgramTests(unittest.TestCase):
         self.assertEqual(built['fr']['2026-10-14'][0]['ages'], ['8+'])
         self.assertEqual(built['fr']['2026-10-14'][0]['location'], 'Animatie blokhut')
 
+    def test_french_missing_title_repaired_without_overwriting_source(self):
+        item = activity()
+        french = {**item, 'title': '  ', 'desc': 'Description française conservée.'}
+        nl, fr = {'2026-10-15': [item]}, {'2026-10-15': [french]}
+        repairs = p.french_repairs(nl, fr, {})
+        self.assertEqual(len(repairs), 1)
+        _, _, fields, identity, source = repairs[0]
+        self.assertEqual(fields, ['title'])
+        self.assertEqual(source['desc'], '')
+        memory = {identity: {'fr': {**source, 'title': 'Mini-discothèque'}}}
+        built = p.build_languages(nl, fr, memory, {}, {})
+        self.assertEqual(built['fr']['2026-10-15'][0]['title'], 'Mini-discothèque')
+        self.assertEqual(built['fr']['2026-10-15'][0]['desc'], french['desc'])
+        self.assertEqual(french['title'], '  ')
+        self.assertEqual(identity, p.french_repairs(nl, fr, {})[0][3])
+        french['title'] = 'Titre fourni par Recreatheek'
+        self.assertEqual(p.french_repairs(nl, fr, {}), [])
+        self.assertEqual(p.build_languages(nl, fr, memory, {}, {})['fr']['2026-10-15'][0]['title'], french['title'])
+
+    def test_french_repair_changes_with_source_and_requires_cache(self):
+        item = activity()
+        french = {**item, 'title': ''}
+        nl, fr = {'2026-10-15': [item]}, {'2026-10-15': [french]}
+        identity = p.french_repairs(nl, fr, {})[0][3]
+        with self.assertRaises(ValueError):
+            p.build_languages(nl, fr, {}, {}, {})
+        item['title'] = 'Nieuwe activiteit'
+        self.assertNotEqual(identity, p.french_repairs(nl, fr, {})[0][3])
+        french['start'] = '20:00'
+        self.assertEqual(p.french_repairs(nl, fr, {}), [])
+
+    def test_french_api_only_requests_french_and_preserves_empty_fields(self):
+        source = {'title': 'Meeleef theater', 'desc': '', 'location': '', 'ages': []}
+        target = {**source, 'title': 'Théâtre participatif'}
+        result = {'status': 'completed', 'output': [{'content': [{'type': 'output_text', 'text': json.dumps({'translations': [{'id': 'fr:hash', 'fr': target}]})}]}]}
+        with patch.object(p, 'fetch_bytes', return_value=json.dumps(result).encode()) as request:
+            translated = p.translate_batch([{'id': 'fr:hash', 'source': source}], {}, 'dummy', ('fr',))
+            self.assertEqual(translated['fr:hash']['fr'], target)
+            payload = json.loads(request.call_args.args[1])
+            self.assertEqual(payload['text']['format']['schema']['properties']['translations']['items']['required'], ['id', 'fr'])
+
     def test_api_contract_checks_each_id_and_completed_response(self):
         source = p.source_text(activity())
         result = {'status': 'completed', 'output': [{'content': [{'type': 'output_text', 'text': json.dumps({'translations': [{'id': 'hash', 'en': source, 'de': source}]})}]}]}
