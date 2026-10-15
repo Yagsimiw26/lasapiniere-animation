@@ -48,3 +48,7 @@ python -m py_compile scripts/update_program.py
 ```
 
 Documentatie: [OpenAI Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs), [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
+
+### Missing French source text
+
+French titles and descriptions supplied by Recreatheek take priority. Blank fields are translated from the matching Dutch activity ahead of publication and saved in the existing translation memory. Only the missing fields are requested. Matching includes date, activity ID and start/end times. A changed Dutch field invalidates the cached repair; a later French source correction automatically replaces it. Raw imported French content remains unchanged in source history. Failed or unvalidated repairs leave the previous public feed available. No visitor request calls OpenAI and no BEX code change is needed.
